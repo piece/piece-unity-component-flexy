@@ -139,7 +139,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
      */
     function testControllerShouldBeUsedIfUseControllerIsTrue()
     {
-        $viewString = 'Controller';
+        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -163,7 +163,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
      */
     function testControllerShouldNotBeUsedIfUseControllerIsFalse()
     {
-        $viewString = 'Controller';
+        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -188,7 +188,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function testExceptionShouldBeRaisedIfControllerDirectoryIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
-        $viewString = 'Controller';
+        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -216,7 +216,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function testExceptionShouldBeRaisedIfControllerClassIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
-        $viewString = 'Controller';
+        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -245,7 +245,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $viewString = 'Plugin';
+        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -274,7 +274,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $viewString = 'Plugin';
+        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
@@ -300,14 +300,14 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $viewString = 'Plugin';
+        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
 
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'plugins', array('Savant'));
         $config->setConfiguration('Renderer_Flexy',
                                   'externalPlugins',
-                                  array('Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin' => 'Piece/Unity/Plugin/Renderer/FlexyTestCase/Plugin')
+                                  array('Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin' => 'Piece/Unity/Plugin/Renderer/FlexyTestCase/Plugin.php')
                                   );
         $context->setConfiguration($config);
         $context->setView($viewString);
