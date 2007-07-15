@@ -29,10 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Piece_Unity
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @since      File available since Release 0.13.0
+ * @since      File available since Release 1.0.0
  */
 
 require dirname(__FILE__) . '/../../../prepare.php';
@@ -46,10 +47,11 @@ require_once 'Piece/Unity/Context.php';
  * TestCase for Piece_Unity_Service_FlexyElement
  *
  * @package    Piece_Unity
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
- * @since      Class available since Release 0.13.0
+ * @since      Class available since Release 1.0.0
  */
 class Piece_Unity_Service_FlexyElementTestCase extends PHPUnit_TestCase
 {

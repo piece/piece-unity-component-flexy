@@ -29,12 +29,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Piece_Unity
- * @subpackage Piece_Unity_Plugin_Renderer_Flexy
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @see        Piece_Unity_Plugin_Renderer_FlexyTestCase
- * @since      File available since Release 0.13.0
+ * @since      File available since Release 1.0.0
  */
 
 // {{{ Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin
@@ -43,12 +43,12 @@
  * A class for unit tests.
  *
  * @package    Piece_Unity
- * @subpackage Piece_Unity_Plugin_Renderer_Flexy
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @see        Piece_Unity_Plugin_Renderer_FlexyTestCase
- * @since      Class available since Release 0.13.0
+ * @since      Class available since Release 1.0.0
  */
 class Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin
 {

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<package packagerversion="1.5.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Piece_Unity_Component_Flexy</name>
+ <channel>pear.piece-framework.com</channel>
+ <summary>A component for HTML_Template_Flexy</summary>
+ <description>A component for HTML_Template_Flexy</description>
+ <lead>
+  <name>KUBO Atsuhiro</name>
+  <user>iteman</user>
+  <email>iteman@users.sourceforge.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-07-15</date>
+ <time>18:01:56</time>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+ <notes>The first release of Piece_Unity_Component_Flexy.</notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <dir name="Piece">
+    <dir name="Unity">
+     <dir name="Plugin">
+      <dir name="Renderer">
+       <file name="Flexy.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /Piece/Unity/Plugin/Renderer -->
+     </dir> <!-- /Piece/Unity/Plugin -->
+     <dir name="Service">
+      <file name="FlexyElement.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Piece/Unity/Service -->
+    </dir> <!-- /Piece/Unity -->
+   </dir> <!-- /Piece -->
+   <dir name="tests">
+    <dir name="Piece">
+     <dir name="Unity">
+      <dir name="Plugin">
+       <dir name="Renderer">
+        <dir name="FlexyTestCase">
+         <dir name="actions">
+          <file name="FlexyExampleAction.php" role="test">
+           <tasks:replace from="@package_version@" to="version" type="package-info" />
+          </file>
+         </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/actions -->
+         <dir name="compiled-templates">
+          <file name="README" role="test">
+           <tasks:replace from="@package_version@" to="version" type="package-info" />
+          </file>
+         </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/compiled-templates -->
+         <dir name="lib">
+          <dir name="Piece">
+           <dir name="Unity">
+            <dir name="Plugin">
+             <dir name="Renderer">
+              <dir name="FlexyTestCase">
+               <file name="Controller.php" role="test">
+                <tasks:replace from="@package_version@" to="version" type="package-info" />
+               </file>
+               <file name="Plugin.php" role="test">
+                <tasks:replace from="@package_version@" to="version" type="package-info" />
+               </file>
+              </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib/Piece/Unity/Plugin/Renderer/FlexyTestCase -->
+             </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib/Piece/Unity/Plugin/Renderer -->
+            </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib/Piece/Unity/Plugin -->
+           </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib/Piece/Unity -->
+          </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib/Piece -->
+         </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/lib -->
+         <dir name="templates">
+          <dir name="Content">
+           <file name="FlexyAutomaticFormElements.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+           <file name="FlexyControllerShouldBeUsedIfUseControllerIsTrue.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+           <file name="FlexyExample.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+           <file name="FlexyExternalPluginShouldBeAbleToUseByExternalPlugins.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+           <file name="FlexyKeepingReference.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+           <file name="FlexyLayoutContent.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+          </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/templates/Content -->
+          <dir name="Fallback">
+           <file name="Fallback.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+          </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/templates/Fallback -->
+          <dir name="Layout">
+           <file name="FlexyLayout.html" role="test">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+           </file>
+          </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/templates/Layout -->
+         </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase/templates -->
+        </dir> <!-- /tests/Piece/Unity/Plugin/Renderer/FlexyTestCase -->
+        <file name="FlexyTestCase.php" role="test">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir> <!-- /tests/Piece/Unity/Plugin/Renderer -->
+      </dir> <!-- /tests/Piece/Unity/Plugin -->
+      <dir name="Service">
+       <file name="FlexyElementTestCase.php" role="test">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /tests/Piece/Unity/Service -->
+     </dir> <!-- /tests/Piece/Unity -->
+    </dir> <!-- /tests/Piece -->
+    <file name="prepare.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /tests -->
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.3</min>
+   </pearinstaller>
+   <package>
+    <name>Piece_Unity</name>
+    <channel>pear.piece-framework.com</channel>
+    <min>0.13.0</min>
+   </package>
+   <package>
+    <name>HTML_Template_Flexy</name>
+    <channel>pear.php.net</channel>
+    <min>1.2.4</min>
+   </package>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+    <min>1.4.3</min>
+   </package>
+  </required>
+  <optional>
+   <package>
+    <name>PHPUnit</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.3.2</min>
+    <max>1.3.2</max>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-07-15</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>The first release of Piece_Unity_Component_Flexy.</notes>
+  </release>
+ </changelog>
+</package>

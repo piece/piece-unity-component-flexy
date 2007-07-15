@@ -29,11 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Piece_Unity
- * @subpackage Piece_Unity_Plugin_Renderer_Flexy
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @since      File available since Release 0.2.0
+ * @since      File available since Release 1.0.0
  */
 
 require dirname(__FILE__) . '/../../../../prepare.php';
@@ -48,11 +48,11 @@ require_once 'Piece/Unity/Context.php';
  * TestCase for Piece_Unity_Plugin_Renderer_Flexy
  *
  * @package    Piece_Unity
- * @subpackage Piece_Unity_Plugin_Renderer_Flexy
+ * @subpackage Piece_Unity_Component_Flexy
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
- * @since      Class available since Release 0.2.0
+ * @since      Class available since Release 1.0.0
  */
 class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Renderer_HTMLTest
 {
@@ -134,9 +134,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->_clear($viewString);
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testControllerShouldBeUsedIfUseControllerIsTrue()
     {
         $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
@@ -158,9 +155,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->_clear($viewString);
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testControllerShouldNotBeUsedIfUseControllerIsFalse()
     {
         $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
@@ -182,9 +176,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->_clear($viewString);
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testExceptionShouldBeRaisedIfControllerDirectoryIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
@@ -210,9 +201,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         Piece_Unity_Error::popCallback();
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testExceptionShouldBeRaisedIfControllerClassIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
@@ -238,9 +226,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         Piece_Unity_Error::popCallback();
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testExternalPluginShouldBeAbleToUseByExternalPlugins()
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
@@ -267,9 +252,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->_clear($viewString);
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testFlexyBuiltinPluginShouldBeAbleToUseByPlugins()
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
@@ -293,9 +275,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->_clear($viewString);
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function testFlexyBuiltinPluginAndExternalPluginShouldBeAbleToUseTogether()
     {
         $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
@@ -359,9 +338,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         return $config;
     }
 
-    /**
-     * @since Method available since Release 0.13.0
-     */
     function _doSetUp()
     {
         $this->_cacheDirectory = dirname(__FILE__) . '/' . basename(__FILE__, '.php');
