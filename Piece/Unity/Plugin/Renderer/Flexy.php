@@ -34,8 +34,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @link       http://pear.php.net/package/HTML_Template_Flexy/
- * @see        HTML_Template_Flexy
- * @since      File available since Release 0.2.0
+ * @since      File available since Release 1.0.0
  */
 
 require_once 'HTML/Template/Flexy.php';
@@ -55,8 +54,7 @@ require_once 'Piece/Unity/Error.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/HTML_Template_Flexy/
- * @see        HTML_Template_Flexy
- * @since      Class available since Release 0.2.0
+ * @since      Class available since Release 1.0.0
  */
 class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
 {
@@ -167,8 +165,6 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
 
     /**
      * Defines and initializes extension points and configuration points.
-     *
-     * @since Method available since Release 0.6.0
      */
     function _initialize()
     {
