@@ -14,8 +14,14 @@
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2007-07-15</date>
- <time>18:01:56</time>
+ <developer>
+  <name>KUMAKURA Yousuke</name>
+  <user>kumatch</user>
+  <email>kumatch@users.sourceforge.net</email>
+  <active>yes</active>
+ </developer>
+ <date>2007-07-16</date>
+ <time>19:42:37</time>
  <version>
   <release>1.0.0</release>
   <api>1.0.0</api>
@@ -140,7 +146,7 @@
    <package>
     <name>Piece_Unity</name>
     <channel>pear.piece-framework.com</channel>
-    <min>0.13.0</min>
+    <min>1.0.0</min>
    </package>
    <package>
     <name>HTML_Template_Flexy</name>
@@ -173,7 +179,7 @@
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2007-07-15</date>
+   <date>2007-07-16</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
    <notes>The first release of Piece_Unity_Component_Flexy.</notes>
   </release>
