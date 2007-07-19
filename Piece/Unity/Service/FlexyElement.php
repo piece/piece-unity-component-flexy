@@ -67,6 +67,7 @@ class Piece_Unity_Service_FlexyElement
      */
 
     var $_viewElement;
+    var $_context;
 
     /**#@-*/
 
@@ -84,6 +85,7 @@ class Piece_Unity_Service_FlexyElement
     {
         $context = &Piece_Unity_Context::singleton();
         $this->_viewElement = &$context->getViewElement();
+        $this->_context = &$context;
     }
 
     // }}}
@@ -166,6 +168,26 @@ class Piece_Unity_Service_FlexyElement
         $this->_viewElement->setElement('_elements', $elements);
     }
 
+    // }}}
+    // {{{ restoreValues()
+
+    /**
+     * Restores field values from the given validation set and container.
+     *
+     * @param string $validationSet
+     * @param mixed  &$container
+     */
+    function restoreValues($validationSet, &$container)
+    {
+        $validation = &$this->_context->getValidation();
+        if ($validation->hasResults($validationSet)) {
+            $results = &$validation->getResults($validationSet);
+            foreach ($results->getFieldNames() as $field) {
+                $this->setValue($field, $container->$field);
+            }
+        }
+    }
+
     /**#@-*/
 
     /**#@+
@@ -176,7 +198,7 @@ class Piece_Unity_Service_FlexyElement
     // {{{ _getElements()
 
     /**
-     * Gets all form elements.
+     * Gets all elements.
      *
      * @return array
      */
