@@ -176,6 +176,7 @@ class Piece_Unity_Service_FlexyElement
      *
      * @param string $validationSet
      * @param mixed  &$container
+     * @since Method available since Release 1.1.0
      */
     function restoreValues($validationSet, &$container)
     {
