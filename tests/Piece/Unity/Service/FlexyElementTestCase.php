@@ -91,6 +91,9 @@ class Piece_Unity_Service_FlexyElementTestCase extends PHPUnit_TestCase
         $this->assertEquals($attributes, $elements['foo']['_attributes']);
     }
 
+    /**
+     * @since Method available since Release 1.1.0
+     */
     function testFieldValuesShouldBeRestoredAfterValidation()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -116,6 +119,9 @@ class Piece_Unity_Service_FlexyElementTestCase extends PHPUnit_TestCase
         unset($_SERVER['REQUEST_METHOD']);
     }
 
+    /**
+     * @since Method available since Release 1.1.0
+     */
     function testFieldValuesShouldNotBeRestoredBeforeValidation()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
