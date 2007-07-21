@@ -91,6 +91,49 @@ class Piece_Unity_Service_FlexyElementTestCase extends PHPUnit_TestCase
         $this->assertEquals($attributes, $elements['foo']['_attributes']);
     }
 
+    function testFieldValuesShouldBeRestoredAfterValidation()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['email'] = 'foo';
+        $context = &Piece_Unity_Context::singleton();
+        $validation = &$context->getValidation();
+        $config = &$validation->getConfiguration();
+        $config->addValidation('email', 'Email');
+        $container = &new stdClass();
+        $validation->validate(null, $container);
+
+        $flexyForm = &new Piece_Unity_Service_FlexyElement();
+        $flexyForm->restoreValues(null, $container);
+
+        $viewElement = &$context->getViewElement();
+        $elements = $viewElement->getElement('_elements');
+
+        $this->assertTrue($viewElement->hasElement('_elements'));
+        $this->assertTrue(array_key_exists('email', $elements));
+        $this->assertEquals('foo', $elements['email']['_value']);
+
+        unset($_POST['email']);
+        unset($_SERVER['REQUEST_METHOD']);
+    }
+
+    function testFieldValuesShouldNotBeRestoredBeforeValidation()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['email'] = 'foo';
+        $context = &Piece_Unity_Context::singleton();
+        $container = &new stdClass();
+
+        $flexyForm = &new Piece_Unity_Service_FlexyElement();
+        $flexyForm->restoreValues(null, $container);
+
+        $viewElement = &$context->getViewElement();
+
+        $this->assertFalse($viewElement->hasElement('_elements'));
+
+        unset($_POST['email']);
+        unset($_SERVER['REQUEST_METHOD']);
+    }
+
     /**#@-*/
 
     /**#@+
