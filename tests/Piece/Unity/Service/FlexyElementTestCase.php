@@ -94,50 +94,36 @@ class Piece_Unity_Service_FlexyElementTestCase extends PHPUnit_TestCase
     /**
      * @since Method available since Release 1.1.0
      */
-    function testFieldValuesShouldBeRestoredAfterValidation()
+    function testFieldValuesShouldBeRestoredByValidationSetAndContainer()
     {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['email'] = 'foo';
+        $cacheDirectory = dirname(__FILE__) . '/' . basename(__FILE__, '.php');
         $context = &Piece_Unity_Context::singleton();
         $validation = &$context->getValidation();
+        $validation->setConfigDirectory($cacheDirectory);
+        $validation->setCacheDirectory($cacheDirectory);
         $config = &$validation->getConfiguration();
-        $config->addValidation('email', 'Email');
+        $config->addValidation('bar', 'Length', array('min' => 1, 'max' => 255));
         $container = &new stdClass();
-        $validation->validate(null, $container);
-
+        $container->foo = 'bar';
+        $container->bar = 'baz';
         $flexyForm = &new Piece_Unity_Service_FlexyElement();
-        $flexyForm->restoreValues(null, $container);
+        $flexyForm->restoreValues('FieldValues', $container);
 
         $viewElement = &$context->getViewElement();
         $elements = $viewElement->getElement('_elements');
 
-        $this->assertTrue($viewElement->hasElement('_elements'));
-        $this->assertTrue(array_key_exists('email', $elements));
-        $this->assertEquals('foo', $elements['email']['_value']);
+        $this->assertEquals(2, count(array_keys($elements)));
+        $this->assertTrue(array_key_exists('foo', $elements));
+        $this->assertEquals('bar', $elements['foo']['_value']);
+        $this->assertTrue(array_key_exists('bar', $elements));
+        $this->assertEquals('baz', $elements['bar']['_value']);
 
-        unset($_POST['email']);
-        unset($_SERVER['REQUEST_METHOD']);
-    }
-
-    /**
-     * @since Method available since Release 1.1.0
-     */
-    function testFieldValuesShouldNotBeRestoredBeforeValidation()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['email'] = 'foo';
-        $context = &Piece_Unity_Context::singleton();
-        $container = &new stdClass();
-
-        $flexyForm = &new Piece_Unity_Service_FlexyElement();
-        $flexyForm->restoreValues(null, $container);
-
-        $viewElement = &$context->getViewElement();
-
-        $this->assertFalse($viewElement->hasElement('_elements'));
-
-        unset($_POST['email']);
-        unset($_SERVER['REQUEST_METHOD']);
+        $cache = &new Cache_Lite_File(array('cacheDir' => "$cacheDirectory/",
+                                            'masterFile' => '',
+                                            'automaticSerialization' => true,
+                                            'errorHandlingAPIBreak' => true)
+                                      );
+        $cache->clean();
     }
 
     /**#@-*/

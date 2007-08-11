@@ -176,16 +176,19 @@ class Piece_Unity_Service_FlexyElement
      *
      * @param string $validationSet
      * @param mixed  &$container
+     * @throws PIECE_UNITY_ERROR_INVOCATION_FAILED
      * @since Method available since Release 1.1.0
      */
     function restoreValues($validationSet, &$container)
     {
         $validation = &$this->_context->getValidation();
-        if ($validation->hasResults($validationSet)) {
-            $results = &$validation->getResults($validationSet);
-            foreach ($results->getFieldNames() as $field) {
-                $this->setValue($field, $container->$field);
-            }
+        $fieldNames = $validation->getFieldNames($validationSet);
+        if (Piece_Unity_Error::hasErrors('exception')) {
+            return;
+        }
+
+        foreach ($fieldNames as $field) {
+            $this->setValue($field, $container->$field);
         }
     }
 
