@@ -188,7 +188,7 @@ class Piece_Unity_Service_FlexyElement
         }
 
         foreach ($fieldNames as $field) {
-            $this->setValue($field, $container->$field);
+            $this->setValue($field, @$container->$field);
         }
     }
 
