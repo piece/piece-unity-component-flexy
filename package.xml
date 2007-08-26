@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<package packagerversion="1.5.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.6.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -20,10 +20,10 @@
   <email>kumatch@users.sourceforge.net</email>
   <active>yes</active>
  </developer>
- <date>2007-07-18</date>
- <time>19:21:29</time>
+ <date>2007-08-26</date>
+ <time>21:33:06</time>
  <version>
-  <release>1.0.0</release>
+  <release>1.1.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -31,7 +31,20 @@
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>The first release of Piece_Unity_Component_Flexy.</notes>
+ <notes>A new release of Piece_Unity_Component_Flexy is now available.
+
+What&apos;s New in Piece_Unity_Component_Flexy 1.1.0
+
+ * Restoring field values into a form: Piece_Unity_Service_FlexyElement::restoreValues() can be used to restore field values from the given validation set and container.
+
+See the following release notes for details.
+
+Enhancements
+============ 
+
+Services:
+
+- Added restoreValues() which can be used to restore field values from the given validation set and container. (Piece_Unity_Service_FlexyElement)</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="Piece">
@@ -123,6 +136,11 @@
        </dir> <!-- /tests/Piece/Unity/Plugin/Renderer -->
       </dir> <!-- /tests/Piece/Unity/Plugin -->
       <dir name="Service">
+       <dir name="FlexyElementTestCase">
+        <file name="FieldValues.yaml" role="test">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir> <!-- /tests/Piece/Unity/Service/FlexyElementTestCase -->
        <file name="FlexyElementTestCase.php" role="test">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
@@ -146,7 +164,7 @@
    <package>
     <name>Piece_Unity</name>
     <channel>pear.piece-framework.com</channel>
-    <min>1.0.0</min>
+    <min>1.1.0</min>
    </package>
    <package>
     <name>HTML_Template_Flexy</name>
@@ -169,6 +187,32 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-08-26</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>A new release of Piece_Unity_Component_Flexy is now available.
+
+What&apos;s New in Piece_Unity_Component_Flexy 1.1.0
+
+ * Restoring field values into a form: Piece_Unity_Service_FlexyElement::restoreValues() can be used to restore field values from the given validation set and container.
+
+See the following release notes for details.
+
+Enhancements
+============ 
+
+Services:
+
+- Added restoreValues() which can be used to restore field values from the given validation set and container. (Piece_Unity_Service_FlexyElement)</notes>
+  </release>
   <release>
    <version>
     <release>1.0.0</release>

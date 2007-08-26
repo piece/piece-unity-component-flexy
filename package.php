@@ -40,11 +40,24 @@ require_once 'PEAR/PackageFileManager2.php';
 
 PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
 
-$releaseVersion = '1.0.0';
+$releaseVersion = '1.1.0';
 $releaseStability = 'stable';
 $apiVersion = '1.0.0';
 $apiStability = 'stable';
-$notes = 'The first release of Piece_Unity_Component_Flexy.';
+$notes = 'A new release of Piece_Unity_Component_Flexy is now available.
+
+What\'s New in Piece_Unity_Component_Flexy 1.1.0
+
+ * Restoring field values into a form: Piece_Unity_Service_FlexyElement::restoreValues() can be used to restore field values from the given validation set and container.
+
+See the following release notes for details.
+
+Enhancements
+============ 
+
+Services:
+
+- Added restoreValues() which can be used to restore field values from the given validation set and container. (Piece_Unity_Service_FlexyElement)';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'svn',
@@ -73,7 +86,7 @@ $package->setReleaseStability($releaseStability);
 $package->setNotes($notes);
 $package->setPhpDep('4.3.0');
 $package->setPearinstallerDep('1.4.3');
-$package->addPackageDepWithChannel('required', 'Piece_Unity', 'pear.piece-framework.com', '1.0.0');
+$package->addPackageDepWithChannel('required', 'Piece_Unity', 'pear.piece-framework.com', '1.1.0');
 $package->addPackageDepWithChannel('required', 'HTML_Template_Flexy', 'pear.php.net', '1.2.4');
 $package->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.3');
 $package->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '1.3.2');
@@ -82,9 +95,7 @@ $package->addMaintainer('developer', 'kumatch', 'KUMAKURA Yousuke', 'kumatch@use
 $package->addGlobalReplacement('package-info', '@package_version@', 'version');
 $package->generateContents();
 
-if (array_key_exists(1, $_SERVER['argv'])
-    && $_SERVER['argv'][1] == 'make'
-    ) {
+if (array_key_exists(1, $_SERVER['argv']) && $_SERVER['argv'][1] == 'make') {
     $package->writePackageFile();
 } else {
     $package->debugPackageFile();
