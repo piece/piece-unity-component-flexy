@@ -114,8 +114,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $buffer = $this->_render();
 
         $this->assertEquals($this->_expectedOutput, $buffer);
-
-        $this->_clear($viewString);
     }
 
     function testDebug()
@@ -130,8 +128,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $buffer = $this->_render();
 
         $this->assertTrue(strstr($buffer, 'FLEXY DEBUG:'));
-
-        $this->_clear($viewString);
     }
 
     function testControllerShouldBeUsedIfUseControllerIsTrue()
@@ -151,8 +147,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $buffer = $this->_render();
 
         $this->assertEquals('<p>bar</p>', rtrim($buffer));
-
-        $this->_clear($viewString);
     }
 
     function testControllerShouldNotBeUsedIfUseControllerIsFalse()
@@ -172,8 +166,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $buffer = $this->_render();
 
         $this->assertEquals('<p></p>', rtrim($buffer));
-
-        $this->_clear($viewString);
     }
 
     function testExceptionShouldBeRaisedIfControllerDirectoryIsNotSpecified()
@@ -249,7 +241,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->assertEquals('bar:bar:[pear_error: message=&quot;could not find plugin with method: \'numberformat\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'numberformat\'" code=0 mode=return level=notice prefix="" info=""]', rtrim($buffer));
 
         set_include_path($oldIncludePath);
-        $this->_clear($viewString);
     }
 
     function testFlexyBuiltinPluginShouldBeAbleToUseByPlugins()
@@ -272,7 +263,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->assertEquals('[pear_error: message=&quot;could not find plugin with method: \'lowerCase\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'lowerCase\'" code=0 mode=return level=notice prefix="" info=""]:1,000.00:1,000.00', rtrim($buffer));
 
         set_include_path($oldIncludePath);
-        $this->_clear($viewString);
     }
 
     function testFlexyBuiltinPluginAndExternalPluginShouldBeAbleToUseTogether()
@@ -299,7 +289,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $this->assertEquals('bar:bar:1,000.00:1,000.00', rtrim($buffer));
 
         set_include_path($oldIncludePath);
-        $this->_clear($viewString);
     }
 
     /**#@-*/
@@ -307,25 +296,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     /**#@+
      * @access private
      */
-
-    function _clear($view)
-    {
-        $files = array("{$this->_cacheDirectory}/compiled-templates/Content/$view.html.en.php",
-                       "{$this->_cacheDirectory}/compiled-templates/Content/$view.html.gettext.serial",
-                       "{$this->_cacheDirectory}/compiled-templates/Content/$view.html.elements.serial",
-                       "{$this->_cacheDirectory}/compiled-templates/Layout/$view.html.en.php",
-                       "{$this->_cacheDirectory}/compiled-templates/Layout/$view.html.gettext.serial",
-                       "{$this->_cacheDirectory}/compiled-templates/Layout/$view.html.elements.serial",
-                       "{$this->_cacheDirectory}/compiled-templates/Fallback/$view.html.en.php",
-                       "{$this->_cacheDirectory}/compiled-templates/Fallback/$view.html.gettext.serial",
-                       "{$this->_cacheDirectory}/compiled-templates/Fallback/$view.html.elements.serial"
-                       );
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                unlink($file);
-            }
-        }
-    }
 
     function &_getConfig()
     {
@@ -341,6 +311,20 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function _doSetUp()
     {
         $this->_cacheDirectory = dirname(__FILE__) . '/' . basename(__FILE__, '.php');
+    }
+
+    /**
+     * @since Method available since Release 1.2.0
+     */
+    function &_getConfigForLayeredStructure()
+    {
+        $config = &new Piece_Unity_Config();
+        $config->setConfiguration('Dispatcher_Simple', 'actionDirectory', "{$this->_cacheDirectory}/actions");
+        $config->setConfiguration('Renderer_Flexy', 'templateDir', "{$this->_cacheDirectory}/templates");
+        $config->setConfiguration('Renderer_Flexy', 'compileDir', "{$this->_cacheDirectory}/compiled-templates");
+        $config->setExtension('View', 'renderer', 'Renderer_Flexy');
+
+        return $config;
     }
 
     /**#@-*/
