@@ -198,8 +198,16 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
         if (!$isLayout) {
             $view = $this->_context->getView();
         } else {
-            $options['templateDir'] = $this->_getConfiguration('layoutDirectory');
-            $options['compileDir'] = $this->_getConfiguration('layoutCompileDirectory');
+            $layoutDirectory = $this->_getConfiguration('layoutDirectory');
+            if (!is_null($layoutDirectory)) {
+                $options['templateDir'] = $layoutDirectory;
+            }
+
+            $layoutCompileDirectory = $this->_getConfiguration('layoutCompileDirectory');
+            if (!is_null($layoutCompileDirectory)) {
+                $options['compileDir'] = $layoutCompileDirectory;
+            }
+
             $view = $this->_getConfiguration('layoutView');
         }
 
