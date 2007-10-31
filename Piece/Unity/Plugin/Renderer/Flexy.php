@@ -266,8 +266,16 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
     function _prepareFallback()
     {
         $config = &$this->_context->getConfiguration();
-        $config->setConfiguration('Renderer_Flexy', 'templateDir', $this->_getConfiguration('fallbackDirectory'));
-        $config->setConfiguration('Renderer_Flexy', 'compileDir', $this->_getConfiguration('fallbackCompileDirectory'));
+
+        $fallbackDirectory = $this->_getConfiguration('fallbackDirectory');
+        if (!is_null($fallbackDirectory)) {
+            $config->setConfiguration('Renderer_Flexy', 'templateDir', $fallbackDirectory);
+        }
+
+        $fallbackCompileDirectory = $this->_getConfiguration('fallbackCompileDirectory');
+        if (!is_null($fallbackCompileDirectory)) {
+            $config->setConfiguration('Renderer_Flexy', 'compileDir', $fallbackCompileDirectory);
+        }
     }
 
     // }}}
