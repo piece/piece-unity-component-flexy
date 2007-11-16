@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @since      File available since Release 1.0.0
@@ -40,24 +40,15 @@ require_once 'PEAR/PackageFileManager2.php';
 
 PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
 
-$releaseVersion = '1.1.0';
+$releaseVersion = '1.2.0';
 $releaseStability = 'stable';
 $apiVersion = '1.0.0';
 $apiStability = 'stable';
 $notes = 'A new release of Piece_Unity_Component_Flexy is now available.
 
-What\'s New in Piece_Unity_Component_Flexy 1.1.0
+What\'s New in Piece_Unity_Component_Flexy 1.2.0
 
- * Restoring field values into a form: Piece_Unity_Service_FlexyElement::restoreValues() can be used to restore field values from the given validation set and container.
-
-See the following release notes for details.
-
-Enhancements
-============ 
-
-Services:
-
-- Added restoreValues() which can be used to restore field values from the given validation set and container. (Piece_Unity_Service_FlexyElement)';
+ * Less configuration: When using layout/fallback, "templateDir" and "compileDir" are always used if its configurations are not given.';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'svn',
@@ -89,7 +80,6 @@ $package->setPearinstallerDep('1.4.3');
 $package->addPackageDepWithChannel('required', 'Piece_Unity', 'pear.piece-framework.com', '1.1.0');
 $package->addPackageDepWithChannel('required', 'HTML_Template_Flexy', 'pear.php.net', '1.2.4');
 $package->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.3');
-$package->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '1.3.2');
 $package->addMaintainer('lead', 'iteman', 'KUBO Atsuhiro', 'iteman@users.sourceforge.net');
 $package->addMaintainer('developer', 'kumatch', 'KUMAKURA Yousuke', 'kumatch@users.sourceforge.net');
 $package->addGlobalReplacement('package-info', '@package_version@', 'version');
