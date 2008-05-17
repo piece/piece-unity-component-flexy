@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2007-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,25 +30,29 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2007-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
+ * @link       http://pear.php.net/package/HTML_Template_Flexy/
  * @since      File available since Release 1.0.0
  */
 
 require_once 'Piece/Unity/Context.php';
+require_once 'Piece/Unity/Error.php';
+require_once 'HTML/Template/Flexy/Element.php';
 
 // {{{ Piece_Unity_Service_FlexyElement
 
 /**
- * A helper class which make it easy to build HTML_Template_Flexy elements
- * such as HTML forms and dynamic elements.
+ * A helper class which make it easy to build HTML_Template_Flexy elements such as
+ * HTML forms and dynamic elements.
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2007-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/HTML_Template_Flexy/
  * @since      Class available since Release 1.0.0
  */
 class Piece_Unity_Service_FlexyElement
@@ -79,7 +83,8 @@ class Piece_Unity_Service_FlexyElement
     // {{{ constructor
 
     /**
-     * Sets the Piece_Unity_ViewElement object.
+     * Sets the application wide Piece_Unity_ViewElement object and
+     * the Piece_Unity_Context object to the properties.
      */
     function Piece_Unity_Service_FlexyElement()
     {
@@ -190,6 +195,58 @@ class Piece_Unity_Service_FlexyElement
         foreach ($fieldNames as $field) {
             $this->setValue($field, @$container->$field);
         }
+    }
+
+    // }}}
+    // {{{ createFormElements()
+
+    /**
+     * Creates form elements which are passed to HTML_Template_Flexy::outputObject()
+     * method from the view elements.
+     *
+     * @return array
+     * @since Method available since Release 1.3.0
+     */
+    function createFormElements()
+    {
+        $formElements = array();
+        foreach ($this->_getElements() as $name => $type) {
+            $formElements[$name] = &new HTML_Template_Flexy_Element();
+            if (!is_array($type)) {
+                continue;
+            }
+
+            if (array_key_exists('_value', $type)) {
+                $formElements[$name]->setValue($type['_value']);
+            }
+
+            if (array_key_exists('_options', $type) && is_array($type['_options'])) {
+                $formElements[$name]->setOptions($type['_options']);
+            }
+
+            if (array_key_exists('_attributes', $type)
+                && is_array($type['_attributes'])
+                ) {
+                $formElements[$name]->setAttributes($type['_attributes']);
+            }
+        }
+
+        return $formElements;
+    }
+
+    // }}}
+    // {{{ setViewElement()
+
+    /**
+     * Sets a Piece_Unity_ViewElement object instead of the application wide
+     * Piece_Unity_ViewElement object
+     *
+     * @param Piece_Unity_ViewElement &$viewElement
+     * @since Method available since Release 1.3.0
+     */
+    function setViewElement(&$viewElement)
+    {
+        $this->_viewElement = &$viewElement;
     }
 
     /**#@-*/

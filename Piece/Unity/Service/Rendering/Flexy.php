@@ -38,9 +38,9 @@
  */
 
 require_once 'HTML/Template/Flexy.php';
-require_once 'HTML/Template/Flexy/Element.php';
 require_once 'PEAR.php';
 require_once 'Piece/Unity/Error.php';
+require_once 'Piece/Unity/Service/FlexyElement.php';
 
 // {{{ Piece_Unity_Service_Rendering_Flexy
 
@@ -127,13 +127,6 @@ class Piece_Unity_Service_Rendering_Flexy
         }
 
         $viewElements = $viewElement->getElements();
-
-        $formElements = array();
-        if (array_key_exists('_elements', $viewElements)) {
-            $formElements = $this->_createFormElements($viewElements['_elements']);
-            unset($viewElements['_elements']);
-        }
-
         if (is_null($this->_controller)) {
             $this->_controller = (object)$viewElements;
         } else {
@@ -146,8 +139,10 @@ class Piece_Unity_Service_Rendering_Flexy
             }
         }
 
+        $flexyElement = &new Piece_Unity_Service_FlexyElement();
+        $flexyElement->setViewElement($viewElement);
         $resultOfOutputObject = $flexy->outputObject($this->_controller,
-                                                     $formElements
+                                                     $flexyElement->createFormElements()
                                                      );
         if (PEAR::isError($resultOfOutputObject)) {
             Piece_Unity_Error::pushPEARError($resultOfOutputObject,
@@ -162,43 +157,6 @@ class Piece_Unity_Service_Rendering_Flexy
     /**#@+
      * @access private
      */
-
-    // }}}
-    // {{{ _createFormElements()
-
-    /**
-     * Creates form elements which are passed to HTML_Template_Flexy::outputObject()
-     * method from the view elements.
-     *
-     * @param array $elements
-     * @return array
-     */
-    function _createFormElements($elements)
-    {
-        $formElements = array();
-        foreach ($elements as $name => $type) {
-            $formElements[$name] = &new HTML_Template_Flexy_Element();
-            if (!is_array($type)) {
-                continue;
-            }
-
-            if (array_key_exists('_value', $type)) {
-                $formElements[$name]->setValue($type['_value']);
-            }
-
-            if (array_key_exists('_options', $type) && is_array($type['_options'])) {
-                $formElements[$name]->setOptions($type['_options']);
-            }
-
-            if (array_key_exists('_attributes', $type)
-                && is_array($type['_attributes'])
-                ) {
-                $formElements[$name]->setAttributes($type['_attributes']);
-            }
-        }
-
-        return $formElements;
-    }
 
     /**#@-*/
 
