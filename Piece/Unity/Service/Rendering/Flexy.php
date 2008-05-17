@@ -114,7 +114,7 @@ class Piece_Unity_Service_Rendering_Flexy
             if ($flexy->currentTemplate === false) {
                 Piece_Unity_Error::pushPEARError($resultOfCompile,
                                                  PIECE_UNITY_ERROR_NOT_FOUND,
-                                                 "The HTML template file [ $file ] is not found."
+                                                 "The HTML template file [ $file ] is not found or not readable."
                                                  );
                 return;
             }
