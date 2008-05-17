@@ -174,8 +174,6 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
             $view = $this->_getConfiguration('layoutView');
         }
 
-        $file = str_replace('_', '/', str_replace('.', '', $view)) . $this->_getConfiguration('templateExtension');
-
         if (!$this->_getConfiguration('useController')) {
             $controller = null;
         } else {
@@ -185,14 +183,19 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
             }
         }
 
+        $file = str_replace('_', '/', str_replace('.', '', $view)) . $this->_getConfiguration('templateExtension');
         $viewElement = &$this->_context->getViewElement();
+
         $rendering = &new Piece_Unity_Service_Rendering_Flexy($options, $controller);
         $rendering->render($file, $viewElement);
         if (Piece_Unity_Error::hasErrors('exception')) {
             $error = Piece_Unity_Error::pop();
             if ($error['code'] == PIECE_UNITY_ERROR_NOT_FOUND) {
                 Piece_Unity_Error::push('PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
-                                        $error['message']
+                                        $error['message'],
+                                        'exception',
+                                        array(),
+                                        $error
                                         );
                 return;
             }
