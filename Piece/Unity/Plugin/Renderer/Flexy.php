@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  *               2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>,
  * All rights reserved.
  *
@@ -31,7 +31,7 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
@@ -40,19 +40,18 @@
  */
 
 require_once 'HTML/Template/Flexy.php';
-require_once 'HTML/Template/Flexy/Element.php';
-require_once 'PEAR.php';
 require_once 'Piece/Unity/Plugin/Renderer/HTML.php';
 require_once 'Piece/Unity/Error.php';
+require_once 'Piece/Unity/Service/Rendering/Flexy.php';
 
 // {{{ Piece_Unity_Plugin_Renderer_Flexy
 
 /**
- * A renderer which is based on HTML_Template_Flexy template engine.
+ * A renderer based on HTML_Template_Flexy.
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
@@ -91,45 +90,6 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
     /**#@+
      * @access private
      */
-
-    // }}}
-    // {{{ _createFormElements()
-
-    /**
-     * Creates form elements which are passed to
-     * HTML_Template_Flexy::outputObject() method from the view elements.
-     *
-     * @param array $elements
-     * @return array
-     */
-    function _createFormElements($elements)
-    {
-        $formElements = array();
-        foreach ($elements as $name => $type) {
-            $formElements[$name] = &new HTML_Template_Flexy_Element();
-            if (!is_array($type)) {
-                continue;
-            }
-
-            if (array_key_exists('_value', $type)) {
-                $formElements[$name]->setValue($type['_value']);
-            }
-
-            if (array_key_exists('_options', $type)
-                && is_array($type['_options'])
-                ) {
-                $formElements[$name]->setOptions($type['_options']);
-            }
-
-            if (array_key_exists('_attributes', $type)
-                && is_array($type['_attributes'])
-                ) {
-                $formElements[$name]->setAttributes($type['_attributes']);
-            }
-        }
-
-        return $formElements;
-    }
 
     // }}}
     // {{{ _getOptions()
@@ -214,49 +174,35 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
             $view = $this->_getConfiguration('layoutView');
         }
 
-        $flexy = &new HTML_Template_Flexy($options);
         $file = str_replace('_', '/', str_replace('.', '', $view)) . $this->_getConfiguration('templateExtension');
-        $resultOfCompile = $flexy->compile($file);
-        if (PEAR::isError($resultOfCompile)) {
-            if ($flexy->currentTemplate === false) {
-                Piece_Unity_Error::pushPEARError($resultOfCompile,
-                                                 'PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
-                                                 "The HTML template file [ $file ] not found."
-                                                 );
-                return;
-            }
 
-            Piece_Unity_Error::pushPEARError($resultOfCompile,
-                                             PIECE_UNITY_ERROR_INVOCATION_FAILED,
-                                             "Failed to invoke the plugin [ {$this->_name} ]."
-                                             );
-            return;
-        }
-
-        $viewElement = &$this->_context->getViewElement();
-        $viewElements = $viewElement->getElements();
-
-        $formElements = array();
-        if (array_key_exists('_elements', $viewElements)) {
-            $formElements = $this->_createFormElements($viewElements['_elements']);
-            unset($viewElements['_elements']);
-        }
-        
         if (!$this->_getConfiguration('useController')) {
-            $controller = (object)$viewElements;
+            $controller = null;
         } else {
-            $controller = &$this->_createController($viewElements);
+            $controller = &$this->_createController();
             if (Piece_Unity_Error::hasErrors('exception')) {
                 return;
             }
         }
 
-        $resultOfOutputObject = $flexy->outputObject($controller, $formElements);
-        if (PEAR::isError($resultOfOutputObject)) {
-            Piece_Unity_Error::pushPEARError($resultOfOutputObject,
-                                             PIECE_UNITY_ERROR_INVOCATION_FAILED,
-                                             "Failed to invoke the plugin [ {$this->_name} ]."
-                                             );
+        $viewElement = &$this->_context->getViewElement();
+        $rendering = &new Piece_Unity_Service_Rendering_Flexy($options, $controller);
+        $rendering->render($file, $viewElement);
+        if (Piece_Unity_Error::hasErrors('exception')) {
+            $error = Piece_Unity_Error::pop();
+            if ($error['code'] == PIECE_UNITY_ERROR_NOT_FOUND) {
+                Piece_Unity_Error::push('PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
+                                        $error['message']
+                                        );
+                return;
+            }
+
+            Piece_Unity_Error::push(PIECE_UNITY_ERROR_INVOCATION_FAILED,
+                                    "Failed to invoke the plugin [ {$this->_name} ].",
+                                    'exception',
+                                    array(),
+                                    $error
+                                    );
         }
     }
 
@@ -272,12 +218,19 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
 
         $fallbackDirectory = $this->_getConfiguration('fallbackDirectory');
         if (!is_null($fallbackDirectory)) {
-            $config->setConfiguration('Renderer_Flexy', 'templateDir', $fallbackDirectory);
+            $config->setConfiguration('Renderer_Flexy',
+                                      'templateDir',
+                                      $fallbackDirectory
+                                      );
         }
 
-        $fallbackCompileDirectory = $this->_getConfiguration('fallbackCompileDirectory');
+        $fallbackCompileDirectory =
+            $this->_getConfiguration('fallbackCompileDirectory');
         if (!is_null($fallbackCompileDirectory)) {
-            $config->setConfiguration('Renderer_Flexy', 'compileDir', $fallbackCompileDirectory);
+            $config->setConfiguration('Renderer_Flexy',
+                                      'compileDir',
+                                      $fallbackCompileDirectory
+                                      );
         }
     }
 
@@ -285,17 +238,16 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
     // {{{ _createController()
 
     /**
-     * Creates a user-defined object with the given view elements. The object
-     * is used as a page controller by HTML_Template_Flexy::outputObject().
+     * Creates a user-defined object used as a controller object by
+     * HTML_Template_Flexy::outputObject().
      *
-     * @param array $viewElements
      * @return mixed
      * @throws PIECE_UNITY_ERROR_INVALID_CONFIGURATION
      * @throws PIECE_UNITY_ERROR_NOT_READABLE
      * @throws PIECE_UNITY_ERROR_NOT_FOUND
      * @throws PIECE_UNITY_ERROR_CANNOT_READ
      */
-    function &_createController($viewElements)
+    function &_createController()
     {
         $controllerDirectory = $this->_getConfiguration('controllerDirectory');
         if (is_null($controllerDirectory)) {
@@ -332,14 +284,6 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
         }
 
         $controller = &new $controllerClass();
-        foreach (array_keys($viewElements) as $element) {
-            if (!is_object($viewElements[$element])) {
-                $controller->$element = $viewElements[$element];
-            } else {
-                $controller->$element = &$viewElements[$element];
-            }
-        }
-
         return $controller;
     }
 
