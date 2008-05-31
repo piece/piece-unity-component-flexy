@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  *               2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>,
  * All rights reserved.
  *
@@ -31,7 +31,7 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
@@ -40,9 +40,11 @@
 
 require_once realpath(dirname(__FILE__) . '/../../../../prepare.php');
 require_once 'Piece/Unity/Plugin/Renderer/HTMLTest.php';
-require_once 'Piece/Unity/Plugin/Renderer/Flexy.php';
 require_once 'Piece/Unity/Config.php';
 require_once 'Piece/Unity/Context.php';
+require_once 'Piece/Unity/Error.php';
+require_once 'Piece/Unity/Service/FlexyElement.php';
+require_once 'Piece/Unity/Plugin/Renderer/Flexy.php';
 
 // {{{ Piece_Unity_Plugin_Renderer_FlexyTestCase
 
@@ -51,7 +53,7 @@ require_once 'Piece/Unity/Context.php';
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
@@ -74,7 +76,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
 
     var $_target = 'Flexy';
     var $_expectedOutput = '<body>
-  <form name="theform" action="http://pear.php.net">    <textarea name="test_textarea">Blogs</textarea>
+  <form name="theform" action="http://pear.php.net" method="post" enctype="application/x-www-form-urlencoded">    <textarea name="test_textarea">Blogs</textarea>
     <select name="test_select"><option value="123">a select option</option><option value="1234" selected>another select option</option></select>
     <input name="test_checkbox" type="checkbox" value="1" checked>
     <input name="test_checkbox_array[]" type="checkbox" value="1" id="tmpId1" checked>1<br>
@@ -95,96 +97,79 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
 
     function testAutomaticFormElements()
     {
-        $viewString = "{$this->_target}AutomaticFormElements";
+        $flexyElement = &new Piece_Unity_Service_FlexyElement();
+        $flexyElement->addForm('theform', 'http://pear.php.net');
+        $flexyElement->setValue('test_textarea', 'Blogs');
+        $flexyElement->setOptions('test_select',
+                                  array('123' => 'a select option',
+                                        '1234' => 'another select option')
+                                  );
+        $flexyElement->setValue('test_select', '1234');
+        $flexyElement->setValue('test_checkbox', '1');
+        $flexyElement->setValue('test_checkbox_array', array(1, 2));
+        $flexyElement->setValue('test_radio', 'yes');
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}AutomaticFormElements");
         $config = &$this->_getConfig();
         $context->setConfiguration($config);
 
-        $elements['theform']['_attributes']['action'] = 'http://pear.php.net';
-        $elements['test_textarea']['_value'] = 'Blogs';
-        $elements['test_select']['_options'] = array('123' => 'a select option',
-                                                     '1234' => 'another select option'
-                                                     );
-        $elements['test_select']['_value'] = '1234';
-        $elements['test_checkbox']['_value'] = '1';
-        $elements['test_checkbox_array[]']['_value'] = array(1, 2);
-        $elements['test_radio']['_value'] = 'yes';
-
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('_elements', $elements);
-        $context->setView($viewString);
-        $buffer = $this->_render();
-
-        $this->assertEquals($this->_expectedOutput, $buffer);
+        $this->assertEquals($this->_expectedOutput, $this->_render());
     }
 
     function testDebug()
     {
-        $viewString = "{$this->_target}NonExistingTemplate";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}NonExistingTemplate");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('content', 'This is a dynamic content.');
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'debug', 1);
         $context->setConfiguration($config);
-        $context->setView($viewString);
-        $buffer = $this->_render();
 
-        $this->assertTrue(strstr($buffer, 'FLEXY DEBUG:'));
+        $this->assertTrue(strstr($this->_render(), 'FLEXY DEBUG:'));
     }
 
     function testControllerShouldBeUsedIfUseControllerIsTrue()
     {
-        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'useController', true);
         $config->setConfiguration('Renderer_Flexy', 'controllerClass', 'Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller');
         $config->setConfiguration('Renderer_Flexy', 'controllerDirectory', "{$this->_cacheDirectory}/lib");
         $context->setConfiguration($config);
-        $context->setView($viewString);
 
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
-        $buffer = $this->_render();
-
-        $this->assertEquals('<p>bar</p>', rtrim($buffer));
+        $this->assertEquals('<p>bar</p>', rtrim($this->_render()));
     }
 
     function testControllerShouldNotBeUsedIfUseControllerIsFalse()
     {
-        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'useController', false);
         $config->setConfiguration('Renderer_Flexy', 'controllerClass', 'Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller');
         $config->setConfiguration('Renderer_Flexy', 'controllerDirectory', "{$this->_cacheDirectory}/lib");
         $context->setConfiguration($config);
-        $context->setView($viewString);
 
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
-        $buffer = $this->_render();
-
-        $this->assertEquals('<p></p>', rtrim($buffer));
+        $this->assertEquals('<p></p>', rtrim($this->_render()));
     }
 
     function testExceptionShouldBeRaisedIfControllerDirectoryIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
-        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'useController', true);
         $config->setConfiguration('Renderer_Flexy', 'controllerDirectory', "{$this->_cacheDirectory}/lib");
         $context->setConfiguration($config);
-        $context->setView($viewString);
-
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
         $this->_render();
 
         $this->assertTrue(Piece_Unity_Error::hasErrors('exception'));
@@ -199,17 +184,14 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function testExceptionShouldBeRaisedIfControllerClassIsNotSpecified()
     {
         Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
-        $viewString = "{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'useController', true);
         $config->setConfiguration('Renderer_Flexy', 'controllerClass', 'Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller');
         $context->setConfiguration($config);
-        $context->setView($viewString);
-
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
         $this->_render();
 
         $this->assertTrue(Piece_Unity_Error::hasErrors('exception'));
@@ -223,58 +205,48 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
 
     function testExternalPluginShouldBeAbleToUseByExternalPlugins()
     {
-        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
-
-        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
+        $viewElement->setElement('bar', 1000);
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy',
                                   'externalPlugins',
                                   array('Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin' => 'Piece/Unity/Plugin/Renderer/FlexyTestCase/Plugin.php')
                                   );
         $context->setConfiguration($config);
-        $context->setView($viewString);
+        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
-        $viewElement->setElement('bar', 1000);
-        $buffer = $this->_render();
-
-        $this->assertEquals('bar:bar:[pear_error: message=&quot;could not find plugin with method: \'numberformat\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'numberformat\'" code=0 mode=return level=notice prefix="" info=""]', rtrim($buffer));
+        $this->assertEquals('bar:bar:[pear_error: message=&quot;could not find plugin with method: \'numberformat\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'numberformat\'" code=0 mode=return level=notice prefix="" info=""]', rtrim($this->_render()));
 
         set_include_path($oldIncludePath);
     }
 
     function testFlexyBuiltinPluginShouldBeAbleToUseByPlugins()
     {
-        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
-
-        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
-
-        $config = &$this->_getConfig();
-        $config->setConfiguration('Renderer_Flexy', 'plugins', array('Savant'));
-        $context->setConfiguration($config);
-        $context->setView($viewString);
-
+        $context->setView("{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins");
         $viewElement = &$context->getViewElement();
         $viewElement->setElement('foo', 'BAR');
         $viewElement->setElement('bar', 1000);
-        $buffer = $this->_render();
+        $config = &$this->_getConfig();
+        $config->setConfiguration('Renderer_Flexy', 'plugins', array('Savant'));
+        $context->setConfiguration($config);
+        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $this->assertEquals('[pear_error: message=&quot;could not find plugin with method: \'lowerCase\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'lowerCase\'" code=0 mode=return level=notice prefix="" info=""]:1,000.00:1,000.00', rtrim($buffer));
+        $this->assertEquals('[pear_error: message=&quot;could not find plugin with method: \'lowerCase\'&quot; code=0 mode=return level=notice prefix=&quot;&quot; info=&quot;&quot;]:[pear_error: message="could not find plugin with method: \'lowerCase\'" code=0 mode=return level=notice prefix="" info=""]:1,000.00:1,000.00', rtrim($this->_render()));
 
         set_include_path($oldIncludePath);
     }
 
     function testFlexyBuiltinPluginAndExternalPluginShouldBeAbleToUseTogether()
     {
-        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
-
-        $viewString = "{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins";
         $context = &Piece_Unity_Context::singleton();
-
+        $context->setView("{$this->_target}ExternalPluginShouldBeAbleToUseByExternalPlugins");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('foo', 'BAR');
+        $viewElement->setElement('bar', 1000);
         $config = &$this->_getConfig();
         $config->setConfiguration('Renderer_Flexy', 'plugins', array('Savant'));
         $config->setConfiguration('Renderer_Flexy',
@@ -282,14 +254,9 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
                                   array('Piece_Unity_Plugin_Renderer_FlexyTestCase_Plugin' => 'Piece/Unity/Plugin/Renderer/FlexyTestCase/Plugin.php')
                                   );
         $context->setConfiguration($config);
-        $context->setView($viewString);
+        $oldIncludePath = set_include_path("$this->_cacheDirectory/lib" . PATH_SEPARATOR . get_include_path());
 
-        $viewElement = &$context->getViewElement();
-        $viewElement->setElement('foo', 'BAR');
-        $viewElement->setElement('bar', 1000);
-        $buffer = $this->_render();
-
-        $this->assertEquals('bar:bar:1,000.00:1,000.00', rtrim($buffer));
+        $this->assertEquals('bar:bar:1,000.00:1,000.00', rtrim($this->_render()));
 
         set_include_path($oldIncludePath);
     }
@@ -303,10 +270,8 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function &_getConfig()
     {
         $config = &new Piece_Unity_Config();
-        $config->setConfiguration('Dispatcher_Simple', 'actionDirectory', "{$this->_cacheDirectory}/actions");
         $config->setConfiguration('Renderer_Flexy', 'templateDir', "{$this->_cacheDirectory}/templates/Content");
         $config->setConfiguration('Renderer_Flexy', 'compileDir', "{$this->_cacheDirectory}/compiled-templates/Content");
-        $config->setExtension('View', 'renderer', 'Renderer_Flexy');
 
         return $config;
     }
@@ -322,10 +287,8 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
     function &_getConfigForLayeredStructure()
     {
         $config = &new Piece_Unity_Config();
-        $config->setConfiguration('Dispatcher_Simple', 'actionDirectory', "{$this->_cacheDirectory}/actions");
         $config->setConfiguration('Renderer_Flexy', 'templateDir', "{$this->_cacheDirectory}/templates");
         $config->setConfiguration('Renderer_Flexy', 'compileDir', "{$this->_cacheDirectory}/compiled-templates");
-        $config->setExtension('View', 'renderer', 'Renderer_Flexy');
 
         return $config;
     }
