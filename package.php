@@ -49,7 +49,7 @@ $notes = 'A new release of Piece_Unity_Component_Flexy is now available.
 What\'s New in Piece_Unity_Component_Flexy 1.3.0';
 
 $package = new PEAR_PackageFileManager2();
-$package->setOptions(array('filelistgenerator' => 'svn',
+$package->setOptions(array('filelistgenerator' => 'file',
                            'changelogoldtonew' => false,
                            'simpleoutput'      => true,
                            'baseinstalldir'    => '/',
