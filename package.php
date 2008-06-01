@@ -40,15 +40,13 @@ require_once 'PEAR/PackageFileManager2.php';
 
 PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
 
-$releaseVersion = '1.2.0';
+$releaseVersion = '1.3.0';
 $releaseStability = 'stable';
 $apiVersion = '1.0.0';
 $apiStability = 'stable';
 $notes = 'A new release of Piece_Unity_Component_Flexy is now available.
 
-What\'s New in Piece_Unity_Component_Flexy 1.2.0
-
- * Less configuration: When using layout/fallback, "templateDir" and "compileDir" are always used if its configurations are not given.';
+What\'s New in Piece_Unity_Component_Flexy 1.3.0';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'svn',
@@ -57,10 +55,7 @@ $package->setOptions(array('filelistgenerator' => 'svn',
                            'baseinstalldir'    => '/',
                            'packagefile'       => 'package.xml',
                            'packagedirectory'  => '.',
-                           'dir_roles'         => array('data' => 'data',
-                                                        'tests' => 'test',
-                                                        'docs' => 'doc'),
-                           'ignore'            => array('package.php', 'package.xml')
+                           'ignore'            => array('package.php')
                            )
                      );
 

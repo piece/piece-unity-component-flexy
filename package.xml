@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.6.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -19,10 +19,10 @@
   <email>kumatch@users.sourceforge.net</email>
   <active>yes</active>
  </developer>
- <date>2007-11-16</date>
- <time>12:17:58</time>
+ <date>2008-06-01</date>
+ <time>16:42:32</time>
  <version>
-  <release>1.2.0</release>
+  <release>1.3.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -32,9 +32,7 @@
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
  <notes>A new release of Piece_Unity_Component_Flexy is now available.
 
-What&apos;s New in Piece_Unity_Component_Flexy 1.2.0
-
- * Less configuration: When using layout/fallback, &quot;templateDir&quot; and &quot;compileDir&quot; are always used if its configurations are not given.</notes>
+What&apos;s New in Piece_Unity_Component_Flexy 1.3.0</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -52,6 +50,11 @@ What&apos;s New in Piece_Unity_Component_Flexy 1.2.0
       </dir> <!-- /Piece/Unity/Plugin/Renderer -->
      </dir> <!-- /Piece/Unity/Plugin -->
      <dir name="Service">
+      <dir name="Rendering">
+       <file name="Flexy.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /Piece/Unity/Service/Rendering -->
       <file name="FlexyElement.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -182,6 +185,21 @@ What&apos;s New in Piece_Unity_Component_Flexy 1.2.0
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.3.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-06-01</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>A new release of Piece_Unity_Component_Flexy is now available.
+
+What&apos;s New in Piece_Unity_Component_Flexy 1.3.0</notes>
+  </release>
   <release>
    <version>
     <release>1.2.0</release>
