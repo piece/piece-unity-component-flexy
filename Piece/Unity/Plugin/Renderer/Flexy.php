@@ -54,7 +54,7 @@ require_once 'Piece/Unity/Service/Rendering/Flexy.php';
  * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    Release: 1.3.0
+ * @version    Release: @package_version@
  * @link       http://pear.php.net/package/HTML_Template_Flexy/
  * @since      Class available since Release 1.0.0
  */
