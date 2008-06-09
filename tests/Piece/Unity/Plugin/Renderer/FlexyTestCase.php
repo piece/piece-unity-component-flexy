@@ -39,7 +39,7 @@
  */
 
 require_once realpath(dirname(__FILE__) . '/../../../../prepare.php');
-require_once 'Piece/Unity/Plugin/Renderer/HTMLTest.php';
+require_once 'Piece/Unity/Plugin/Renderer/HTML/CompatibilityTests.php';
 require_once 'Piece/Unity/Config.php';
 require_once 'Piece/Unity/Context.php';
 require_once 'Piece/Unity/Error.php';
@@ -49,7 +49,7 @@ require_once 'Piece/Unity/Plugin/Renderer/Flexy.php';
 // {{{ Piece_Unity_Plugin_Renderer_FlexyTestCase
 
 /**
- * TestCase for Piece_Unity_Plugin_Renderer_Flexy
+ * Some tests for Piece_Unity_Plugin_Renderer_Flexy.
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Flexy
@@ -59,7 +59,7 @@ require_once 'Piece/Unity/Plugin/Renderer/Flexy.php';
  * @version    Release: @package_version@
  * @since      Class available since Release 1.0.0
  */
-class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Renderer_HTMLTest
+class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Renderer_HTML_CompatibilityTests
 {
 
     // {{{ properties
