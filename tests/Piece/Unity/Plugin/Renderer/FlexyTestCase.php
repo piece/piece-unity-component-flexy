@@ -261,6 +261,28 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         set_include_path($oldIncludePath);
     }
 
+    /**
+     * @since Method available since Release 1.3.0
+     */
+    function testShouldInstantiateAControllerOnce()
+    {
+        $GLOBALS['PIECE_UNITY_Plugin_Renderer_FlexyTestCase_Controller_InstantiationCount'] = 0;
+        $context = &Piece_Unity_Context::singleton();
+        $context->setView("{$this->_target}LayoutContent");
+        $config = &$this->_getConfig();
+        $config->setConfiguration("Renderer_{$this->_target}", 'useLayout', true);
+        $config->setConfiguration("Renderer_{$this->_target}", 'layoutView', "{$this->_target}Layout");
+        $config->setConfiguration("Renderer_{$this->_target}", 'layoutDirectory', "{$this->_cacheDirectory}/templates/Layout");
+        $config->setConfiguration("Renderer_{$this->_target}", 'layoutCompileDirectory', "{$this->_cacheDirectory}/compiled-templates/Layout");
+        $config->setConfiguration('Renderer_Flexy', 'useController', true);
+        $config->setConfiguration('Renderer_Flexy', 'controllerClass', 'Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller');
+        $config->setConfiguration('Renderer_Flexy', 'controllerDirectory', "{$this->_cacheDirectory}/lib");
+        $context->setConfiguration($config);
+        $this->_render();
+
+        $this->assertEquals(1, $GLOBALS['PIECE_UNITY_Plugin_Renderer_FlexyTestCase_Controller_InstantiationCount']);
+    }
+
     /**#@-*/
 
     /**#@+

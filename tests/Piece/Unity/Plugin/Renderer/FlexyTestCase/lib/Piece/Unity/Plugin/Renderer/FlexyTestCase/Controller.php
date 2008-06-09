@@ -39,6 +39,11 @@
  * @since      File available since Release 1.0.0
  */
 
+// {{{ GLOBALS
+
+$GLOBALS['PIECE_UNITY_Plugin_Renderer_FlexyTestCase_Controller_InstantiationCount'] = 0;
+
+// }}}
 // {{{ Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller
 
 /**
@@ -73,6 +78,11 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller
     /**#@+
      * @access public
      */
+
+    function Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller()
+    {
+        ++$GLOBALS['PIECE_UNITY_Plugin_Renderer_FlexyTestCase_Controller_InstantiationCount'];
+    }
 
     function lowerCase($value)
     {

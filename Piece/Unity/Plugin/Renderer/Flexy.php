@@ -54,7 +54,7 @@ require_once 'Piece/Unity/Service/Rendering/Flexy.php';
  * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 KUMAKURA Yousuke <kumatch@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    Release: @package_version@
+ * @version    Release: 1.3.0
  * @link       http://pear.php.net/package/HTML_Template_Flexy/
  * @since      Class available since Release 1.0.0
  */
@@ -78,6 +78,7 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
                                        'debug'       => 0,
                                        'plugins'     => array()
                                        );
+    var $_controller;
 
     /**#@-*/
 
@@ -174,10 +175,10 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
             $view = $this->_getConfiguration('layoutView');
         }
 
-        if (!$this->_getConfiguration('useController')) {
-            $controller = null;
-        } else {
-            $controller = &$this->_createController();
+        if ($this->_getConfiguration('useController')
+            && is_null($this->_controller)
+            ) {
+            $this->_controller = &$this->_createController();
             if (Piece_Unity_Error::hasErrors('exception')) {
                 return;
             }
@@ -186,7 +187,8 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
         $file = str_replace('_', '/', str_replace('.', '', $view)) . $this->_getConfiguration('templateExtension');
         $viewElement = &$this->_context->getViewElement();
 
-        $rendering = &new Piece_Unity_Service_Rendering_Flexy($options, $controller);
+        $rendering =
+            &new Piece_Unity_Service_Rendering_Flexy($options, $this->_controller);
         $rendering->render($file, $viewElement);
         if (Piece_Unity_Error::hasErrors('exception')) {
             $error = Piece_Unity_Error::pop();
