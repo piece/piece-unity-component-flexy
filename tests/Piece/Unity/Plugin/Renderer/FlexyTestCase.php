@@ -161,7 +161,6 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
 
     function testExceptionShouldBeRaisedIfControllerDirectoryIsNotSpecified()
     {
-        Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
         $context = &Piece_Unity_Context::singleton();
         $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
         $viewElement = &$context->getViewElement();
@@ -170,20 +169,19 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $config->setConfiguration('Renderer_Flexy', 'useController', true);
         $config->setConfiguration('Renderer_Flexy', 'controllerDirectory', "{$this->_cacheDirectory}/lib");
         $context->setConfiguration($config);
+        Piece_Unity_Error::disableCallback();
         $this->_render();
+        Piece_Unity_Error::enableCallback();
 
-        $this->assertTrue(Piece_Unity_Error::hasErrors('exception'));
+        $this->assertTrue(Piece_Unity_Error::hasErrors());
 
         $error = Piece_Unity_Error::pop();
 
         $this->assertEquals(PIECE_UNITY_ERROR_INVOCATION_FAILED, $error['code']);
-
-        Piece_Unity_Error::popCallback();
     }
 
     function testExceptionShouldBeRaisedIfControllerClassIsNotSpecified()
     {
-        Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
         $context = &Piece_Unity_Context::singleton();
         $context->setView("{$this->_target}ControllerShouldBeUsedIfUseControllerIsTrue");
         $viewElement = &$context->getViewElement();
@@ -192,15 +190,15 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $config->setConfiguration('Renderer_Flexy', 'useController', true);
         $config->setConfiguration('Renderer_Flexy', 'controllerClass', 'Piece_Unity_Plugin_Renderer_FlexyTestCase_Controller');
         $context->setConfiguration($config);
+        Piece_Unity_Error::disableCallback();
         $this->_render();
+        Piece_Unity_Error::enableCallback();
 
-        $this->assertTrue(Piece_Unity_Error::hasErrors('exception'));
+        $this->assertTrue(Piece_Unity_Error::hasErrors());
 
         $error = Piece_Unity_Error::pop();
 
         $this->assertEquals(PIECE_UNITY_ERROR_INVOCATION_FAILED, $error['code']);
-
-        Piece_Unity_Error::popCallback();
     }
 
     function testExternalPluginShouldBeAbleToUseByExternalPlugins()

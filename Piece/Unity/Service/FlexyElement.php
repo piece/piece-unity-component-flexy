@@ -188,7 +188,7 @@ class Piece_Unity_Service_FlexyElement
     {
         $validation = &$this->_context->getValidation();
         $fieldNames = $validation->getFieldNames($validationSet);
-        if (Piece_Unity_Error::hasErrors('exception')) {
+        if (Piece_Unity_Error::hasErrors()) {
             return;
         }
 

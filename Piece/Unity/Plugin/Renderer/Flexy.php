@@ -179,7 +179,7 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
             && is_null($this->_controller)
             ) {
             $this->_controller = &$this->_createController();
-            if (Piece_Unity_Error::hasErrors('exception')) {
+            if (Piece_Unity_Error::hasErrors()) {
                 return;
             }
         }
@@ -190,7 +190,7 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
         $rendering =
             &new Piece_Unity_Service_Rendering_Flexy($options, $this->_controller);
         $rendering->render($file, $viewElement);
-        if (Piece_Unity_Error::hasErrors('exception')) {
+        if (Piece_Unity_Error::hasErrors()) {
             $error = Piece_Unity_Error::pop();
             if ($error['code'] == PIECE_UNITY_ERROR_NOT_FOUND) {
                 Piece_Unity_Error::push('PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
@@ -274,7 +274,7 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
 
         if (!Piece_Unity_ClassLoader::loaded($controllerClass)) {
             Piece_Unity_ClassLoader::load($controllerClass, $controllerDirectory);
-            if (Piece_Unity_Error::hasErrors('exception')) {
+            if (Piece_Unity_Error::hasErrors()) {
                 $return = null;
                 return $return;
             }
