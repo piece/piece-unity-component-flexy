@@ -337,4 +337,3 @@ function setBaz(&$foo)
  * indent-tabs-mode: nil
  * End:
  */
-?>

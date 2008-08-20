@@ -309,4 +309,3 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
  * indent-tabs-mode: nil
  * End:
  */
-?>

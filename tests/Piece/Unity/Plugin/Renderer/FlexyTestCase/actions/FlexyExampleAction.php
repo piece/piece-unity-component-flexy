@@ -100,4 +100,3 @@ class FlexyExampleAction
  * indent-tabs-mode: nil
  * End:
  */
-?>
