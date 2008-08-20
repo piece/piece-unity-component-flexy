@@ -151,10 +151,6 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
      *
      * @param boolean $isLayout
      * @throws PIECE_UNITY_ERROR_INVOCATION_FAILED
-     * @throws PIECE_UNITY_ERROR_INVALID_CONFIGURATION
-     * @throws PIECE_UNITY_ERROR_NOT_READABLE
-     * @throws PIECE_UNITY_ERROR_NOT_FOUND
-     * @throws PIECE_UNITY_ERROR_CANNOT_READ
      */
     function _doRender($isLayout)
     {
@@ -248,9 +244,7 @@ class Piece_Unity_Plugin_Renderer_Flexy extends Piece_Unity_Plugin_Renderer_HTML
      *
      * @return mixed
      * @throws PIECE_UNITY_ERROR_INVALID_CONFIGURATION
-     * @throws PIECE_UNITY_ERROR_NOT_READABLE
      * @throws PIECE_UNITY_ERROR_NOT_FOUND
-     * @throws PIECE_UNITY_ERROR_CANNOT_READ
      */
     function &_createController()
     {
