@@ -126,7 +126,7 @@ class Piece_Unity_Plugin_Renderer_FlexyTestCase extends Piece_Unity_Plugin_Rende
         $config->setConfiguration('Renderer_Flexy', 'debug', 1);
         $context->setConfiguration($config);
 
-        $this->assertTrue(strstr($this->_render(), 'FLEXY DEBUG:'));
+        $this->assertTrue(strstr(@$this->_render(), 'FLEXY DEBUG:'));
     }
 
     function testControllerShouldBeUsedIfUseControllerIsTrue()
