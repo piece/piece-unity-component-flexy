@@ -47,7 +47,10 @@ $apiVersion = '1.0.0';
 $apiStability = 'stable';
 $notes = 'A new release of Piece_Unity_Component_Flexy is now available.
 
-What\'s New in Piece_Unity_Component_Flexy 1.3.0';
+What\'s New in Piece_Unity_Component_Flexy 1.3.0
+
+ * Piece_Unity_Service_Rendering_Flexy: Piece_Unity_Service_Rendering_Flexy allows you to use HTML_Template_Flexy in actions and plug-ins.
+ * Improved custom controller handling: The behavior of the Renderer_Flexy plug-in has been changed to instantiate a controller once.';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'file',
